@@ -12,7 +12,7 @@ import {
 import { cn, formatBytes } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { useFileSystem } from "@/context/FileSystemContext";
+import { useFileSystem } from "@/context/file-system-context";
 
 interface SidebarProps {
   onSettingsClick?: () => void;

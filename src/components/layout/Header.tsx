@@ -2,7 +2,7 @@
 
 import { Menu, Search } from "lucide-react";
 import { useState } from "react";
-import { useFileSystem } from "@/context/FileSystemContext";
+import { useFileSystem } from "@/context/file-system-context";
 import { Input } from "@/components/ui/input";
 import {
   Sheet,
@@ -12,7 +12,7 @@ import {
   SheetTitle,
   SheetDescription,
 } from "@/components/ui/sheet";
-import Sidebar from "./Sidebar";
+import Sidebar from "./sidebar";
 import { cn } from "@/lib/utils";
 
 interface HeaderProps {

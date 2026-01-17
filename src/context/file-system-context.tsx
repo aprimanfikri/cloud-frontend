@@ -11,8 +11,7 @@ import React, {
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { FileItem, FileSystemContextType, ActiveOps } from "../types";
-
-const API = process.env.NEXT_PUBLIC_API_URL;
+import apiClient from "../lib/api-client";
 
 const FileSystemContext = createContext<FileSystemContextType | null>(null);
 
@@ -64,9 +63,9 @@ export const FileSystemProvider = ({
   );
 
   const refreshFiles = useCallback(() => {
-    fetch(`${API}/files`)
-      .then((res) => res.json())
-      .then((list) => setFiles(list))
+    apiClient
+      .get<FileItem[]>("/files")
+      .then((res) => setFiles(res.data))
       .catch((err) => {
         console.error("Failed to fetch files:", err);
         toast.error("Failed to fetch files");
@@ -114,7 +113,7 @@ export const FileSystemProvider = ({
       deleting: new Set(prev.deleting).add(filename),
     }));
     try {
-      await fetch(`${API}/files/${filename}`, { method: "DELETE" });
+      await apiClient.delete(`/files/${filename}`);
       toast.success(`Deleted ${filename}`);
       refreshFiles();
     } catch (e) {
@@ -137,7 +136,14 @@ export const FileSystemProvider = ({
     }));
 
     try {
-      const downloadUrl = `${API}/download/${encodeURIComponent(filename)}?download=true`;
+      const response = await apiClient.get(
+        `/download/${encodeURIComponent(filename)}?download=true`,
+        {
+          responseType: "blob",
+        },
+      );
+
+      const downloadUrl = window.URL.createObjectURL(new Blob([response.data]));
 
       const link = document.createElement("a");
       link.href = downloadUrl;
@@ -145,6 +151,7 @@ export const FileSystemProvider = ({
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      window.URL.revokeObjectURL(downloadUrl);
 
       toast.info(`Downloading ${filename}`);
 
@@ -187,15 +194,12 @@ export const FileSystemProvider = ({
       deleting: new Set(prev.deleting).add(folderName),
     }));
     try {
-      const res = await fetch(`${API}/files/folder`, {
-        method: "DELETE",
+      const res = await apiClient.delete("/files/folder", {
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ folderPath }),
+        data: { folderPath },
       });
 
-      if (!res.ok) throw new Error("Delete failed");
-
-      const data = await res.json();
+      const data = res.data;
       toast.success(`Deleted ${folderName} (${data.count} files)`);
       refreshFiles();
     } catch (e) {

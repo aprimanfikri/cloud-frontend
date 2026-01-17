@@ -1,9 +1,9 @@
 "use client";
 
-import { useFileSystem } from "@/context/FileSystemContext";
+import { useFileSystem } from "@/context/file-system-context";
 import { useState } from "react";
-import FileGrid from "@/components/files/FileGrid";
-import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+import FileGrid from "@/components/files/file-grid";
+import Breadcrumbs from "@/components/navigation/breadcrumbs";
 import { FileItem } from "@/types";
 import {
   Dialog,

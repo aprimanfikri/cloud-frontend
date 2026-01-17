@@ -1,11 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { useFileSystem } from "@/context/FileSystemContext";
-import { useUpload } from "@/context/UploadContext";
-import FileGrid from "@/components/files/FileGrid";
-import UploadWidget from "@/components/upload/UploadWidget";
-import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+import { useFileSystem } from "@/context/file-system-context";
+import { useUpload } from "@/context/upload-context";
+import FileGrid from "@/components/files/file-grid";
+import UploadWidget from "@/components/upload/upload-widget";
+import Breadcrumbs from "@/components/navigation/breadcrumbs";
 import { FileItem } from "@/types";
 import {
   Dialog,

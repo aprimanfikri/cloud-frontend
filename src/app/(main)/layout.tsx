@@ -1,14 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
-import Sidebar from "@/components/layout/Sidebar";
-import Header from "@/components/layout/Header";
-import SettingsModal from "@/components/modals/SettingsModal";
-import FilePreviewModal from "@/components/modals/FilePreviewModal";
-import GlobalUploadProgress from "@/components/upload/GlobalUploadProgress";
+import Sidebar from "@/components/layout/sidebar";
+import Header from "@/components/layout/header";
+import SettingsModal from "@/components/modals/settings-modal";
+import FilePreviewModal from "@/components/modals/file-preview-modal";
+import GlobalUploadProgress from "@/components/upload/global-upload-progress";
 import DragDropOverlay from "@/components/ui/drag-drop-overlay";
-import { useFileSystem } from "@/context/FileSystemContext";
-import { useUpload } from "@/context/UploadContext";
+import { useFileSystem } from "@/context/file-system-context";
+import { useUpload } from "@/context/upload-context";
 
 export default function MainLayout({
   children,

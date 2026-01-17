@@ -1,8 +1,8 @@
 "use client";
 
 import { FileItem, ActiveOps } from "@/types";
-import FolderCard from "./FolderCard";
-import FileCard from "./FileCard";
+import FolderCard from "./folder-card";
+import FileCard from "./file-card";
 
 interface FileGridProps {
   files: FileItem[];

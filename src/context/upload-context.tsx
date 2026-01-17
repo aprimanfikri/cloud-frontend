@@ -8,22 +8,10 @@ import React, {
   useState,
 } from "react";
 import axios from "axios";
-import axiosRetry from "axios-retry";
 import { toast } from "sonner";
 import { UploadState, UploadChunk } from "../types";
-import { useFileSystem } from "./FileSystemContext";
-
-axiosRetry(axios, {
-  retries: 3,
-  retryDelay: (retryCount) => {
-    return axiosRetry.exponentialDelay(retryCount);
-  },
-  retryCondition: (error) => {
-    return axiosRetry.isNetworkError(error);
-  },
-});
-
-const API = process.env.NEXT_PUBLIC_API_URL;
+import { useFileSystem } from "./file-system-context";
+import apiClient from "../lib/api-client";
 
 const getOptimalChunkSize = (size: number) => {
   if (size < 200 * 1024 * 1024) return 2 * 1024 * 1024;
@@ -179,7 +167,7 @@ export const UploadProvider = ({ children }: { children: React.ReactNode }) => {
       formData.append("file", chunkBlob, `part-${i}_${file.name}`);
 
       try {
-        const res = await axios.post(`${API}/upload/chunk`, formData, {
+        const res = await apiClient.post("/upload/chunk", formData, {
           signal,
           onUploadProgress: (progressEvent) => {
             if (signal?.aborted) return;
@@ -237,8 +225,8 @@ export const UploadProvider = ({ children }: { children: React.ReactNode }) => {
     uploadedChunks.sort((a, b) => a.index - b.index);
     setStatus("Finalizing...");
 
-    await axios.post(
-      `${API}/upload/finalize`,
+    await apiClient.post(
+      "/upload/finalize",
       {
         filename: file.name,
         totalSize: file.size,
@@ -292,8 +280,8 @@ export const UploadProvider = ({ children }: { children: React.ReactNode }) => {
           console.log(
             `[Cleanup] User cancelled. Cleaning up ${messageIds.length} chunks...`,
           );
-          axios
-            .delete(`${API}/upload/cancel`, {
+          apiClient
+            .delete("/upload/cancel", {
               data: { messageIds },
             })
             .catch((e) => console.error("Cleanup failed:", e));

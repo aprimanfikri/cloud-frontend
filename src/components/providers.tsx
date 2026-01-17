@@ -2,8 +2,8 @@
 
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { Toaster } from "@/components/ui/sonner";
-import { FileSystemProvider } from "@/context/FileSystemContext";
-import { UploadProvider } from "@/context/UploadContext";
+import { FileSystemProvider } from "@/context/file-system-context";
+import { UploadProvider } from "@/context/upload-context";
 import { Suspense } from "react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
