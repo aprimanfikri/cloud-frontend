@@ -44,8 +44,6 @@ export async function fetchKongToken() {
       },
     });
 
-    console.log(response.data);
-
     return response.data.data;
   } catch (error) {
     console.error("Error fetching Kong token:", error);
